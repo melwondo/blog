@@ -17,4 +17,32 @@ class BlogController extends AbstractController
             'owner' => 'Mélanie',
         ]);
     }
+
+    /**
+     * @Route("/blog/show/{page}", name="blog_show", requirements={"page"="^[a-z0-9]+(?:-[a-z0-9]+)*$"}, methods={"GET"}, defaults={"page"="/"})
+     * 
+     */
+    public function show($page)
+    {
+        
+        
+        if ($page == "/") {
+            $page = "article sans titre";
+            $page = ucwords($page);
+            return $this->render('blog/show.html.twig', [
+                'page' => $page,
+                
+            ]);
+        }else{
+            $traitmentTiret = explode("-", $page);
+            $chaine = implode(" ",$traitmentTiret );
+            $page = ucwords($chaine);
+
+            return $this->render('blog/show.html.twig', [
+                'page' => $page,
+                'traitmentTiret' => $traitmentTiret,
+                'chaine' => $chaine
+            ]);
+        }
+    }
 }
