@@ -77,24 +77,41 @@ class BlogController extends AbstractController
      */
     public function showByCategory(string $category)
     {
-        $category = $this->getDoctrine()
-                ->getRepository(Category::class)
+
+        $em = $this->getDoctrine()->getManager();
+        
+        $category = $em->getRepository(Category::class)
                 ->findOneByName($category);
-        $article = $this->getDoctrine()
-                ->getRepository(Article::class)
-                ->findByCategory($category,
-                 ['id' => 'DESC'],3);
+   
+        $articles = $category->getArticles();
+        
+        return $this->render('blog/category.html.twig',
+        [
+            'category' => $category,
+            'articles' => $articles]
+        );
+    }
+
+    // /**
+    //  * @Route("blog/category/{category}", name="show_category", defaults={"category" = null})
+    //  */
+    // public function showByCategory(string $category)
+    // {
+    //     $category = $this->getDoctrine()
+    //             ->getRepository(Category::class)
+    //             ->findOneByName($category);
+    //     $article = $this->getDoctrine()
+    //             ->getRepository(Article::class)
+    //             ->findByCategory($category,
+    //              ['id' => 'DESC'],3);
                
         
        
 
-        return $this->render(
-        'blog/category.html.twig',[
-            'category' => $category,
-            'articles' => $article
-        
-            
-            ]
-        );
-    }
+    //     return $this->render('blog/category.html.twig',
+    //     [
+    //         'category' => $category,
+    //         'articles' => $article]
+    //     );
+    // }
 }
