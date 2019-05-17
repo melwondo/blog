@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+
 class BlogController extends AbstractController
 {
     
@@ -34,7 +35,7 @@ class BlogController extends AbstractController
         );
     }
 
-    /**
+    /** 
      * Getting a article with a formatted page for title
      *
      * @param string $page The pageger
@@ -51,7 +52,7 @@ class BlogController extends AbstractController
                 ->createNotFoundException('No page has been sent to find an article in article\'s table.');
             }
 
-        $page = preg_replace('/-/',' ', ucwords(trim(strip_tags($page)), "-"));
+        $page = ucwords(preg_replace("/-/", " ",$page));
 
         $article = $this->getDoctrine()
                 ->getRepository(Article::class)
@@ -59,7 +60,7 @@ class BlogController extends AbstractController
 
         if (!$article) {
             throw $this->createNotFoundException(
-            'No article with '.$page.' title, found in article\'s table.'
+            'No article with ta mère '.$page.' title, found in article\'s table.'
         );
         }
 
@@ -73,24 +74,42 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("blog/category/{category}", name="show_category", defaults={"category" = null})
+     * @Route("/blog/category/{id}", name="show_category", defaults={"category" = null})
      */
-    public function showByCategory(string $category)
+    public function showByCategory(Category $category): Response
     {
 
-        $em = $this->getDoctrine()->getManager();
-        
-        $category = $em->getRepository(Category::class)
-                ->findOneByName($category);
    
         $articles = $category->getArticles();
         
         return $this->render('blog/category.html.twig',
         [
             'category' => $category,
-            'articles' => $articles]
+            'articles' => $articles,
+        ] 
         );
     }
+
+    // /**
+    //  * @Route("/blog/category/{category}", name="show_category", defaults={"category" = null})
+    //  */
+    // public function showByCategory(string $category)
+    // {
+
+    //     $em = $this->getDoctrine()->getManager();
+        
+    //     $category = $em->getRepository(Category::class)
+    //             ->findOneByName($category);
+   
+    //     $articles = $category->getArticles();
+        
+    //     return $this->render('blog/category.html.twig',
+    //     [
+    //         'category' => $category,
+    //         'articles' => $articles]
+    //     );
+    // }
+
 
     // /**
     //  * @Route("blog/category/{category}", name="show_category", defaults={"category" = null})
@@ -113,5 +132,21 @@ class BlogController extends AbstractController
     //         'category' => $category,
     //         'articles' => $article]
     //     );
+    // }
+
+
+    // /**
+    //  * @Route("/blog/article/{id}", name="show_article")
+    //  */
+    // public function showA(Category $category): Response
+    // {
+    //     // $em = $this->getDoctrine()->getManager();
+        
+    //     // $category = $em->getRepository(Category::class)
+    //     //         ->findOneByName($category);
+   
+    //     $articles = $category->getArticles();
+
+    //     return $this->render('blog/article.html.twig', ['category'=>$category, 'articles'=> $articles]);
     // }
 }
