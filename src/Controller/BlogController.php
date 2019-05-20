@@ -7,7 +7,10 @@ use App\Entity\Category;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
+use App\Form\CategoryType\CategoryType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormBuilderInterface;
 
 class BlogController extends AbstractController
 {
@@ -19,6 +22,12 @@ class BlogController extends AbstractController
      */
     public function index(): Response
     {
+        // $form = $this->createForm(
+        //     CategoryType::class,
+        //     null,
+        //     ['method' => Request::METHOD_GET]
+        // );
+
         $articles = $this->getDoctrine()
             ->getRepository(Article::class)
             ->findAll();
@@ -31,7 +40,8 @@ class BlogController extends AbstractController
 
         return $this->render(
                 'blog/index.html.twig',
-                ['articles' => $articles]
+                ['articles' => $articles,
+                ]
         );
     }
 
