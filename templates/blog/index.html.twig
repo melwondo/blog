@@ -4,20 +4,27 @@
 
 {% block body %}
     {# {{ dump(articles)}} #}
+    <div class="container">
     <h1>All articles from article s table : </h1>
     {% for article in articles %}
         <div>
-            <h2>{{ loop.index }} / {{ article.title }} - Category : {{ article.category.name }}</h2>
+            <h2>{{ loop.index }} / {{ article.title }}  - Category : {{ article.category.name }}</h2>
             <p>{{ article.content }}</p>
+        {% for tag in article.tags %}
+                <li class="badge badge-pill badge-info">{{ tag.name }} </li>
+            {% else %}
+                <li>No tags for this article</li>
+            {% endfor %}
         </div>
     {% else %}
         Aucun article trouvé.
     {% endfor %}
+    
     
     <a href="{{ path('homepage') }}">
       Back to homepage.
     </a>
     <br>
     
-    
+    </div>
 {% endblock %}

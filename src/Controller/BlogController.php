@@ -11,6 +11,9 @@ use App\Form\CategoryType\CategoryType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use App\Repository\ArticleRepository;
+use App\Entity\Tag;
+use App\Repository\TagRepository;
 
 class BlogController extends AbstractController
 {
@@ -20,17 +23,13 @@ class BlogController extends AbstractController
      * @Route("/blog", name="blog_index")
      * @return Response A response instance
      */
-    public function index(): Response
+    public function index(ArticleRepository $repo): Response
     {
-        // $form = $this->createForm(
-        //     CategoryType::class,
-        //     null,
-        //     ['method' => Request::METHOD_GET]
-        // );
 
-        $articles = $this->getDoctrine()
-            ->getRepository(Article::class)
-            ->findAll();
+        $articles = $repo->findAll();
+        // $articles = $this->getDoctrine()
+        //     ->getRepository(Article::class)
+        //     ->findAll();
 
         if (!$articles) {
             throw $this->createNotFoundException(
@@ -57,22 +56,12 @@ class BlogController extends AbstractController
      */
     public function show(string $page) : Response
     {
-        if (!$page) {
-                throw $this
-                ->createNotFoundException('No page has been sent to find an article in article\'s table.');
-            }
 
         $page = ucwords(preg_replace("/-/", " ",$page));
 
         $article = $this->getDoctrine()
                 ->getRepository(Article::class)
                 ->findOneBy(['title' => mb_strtolower($page)]);
-
-        if (!$article) {
-            throw $this->createNotFoundException(
-            'No article with ta mère '.$page.' title, found in article\'s table.'
-        );
-        }
 
         return $this->render(
         'blog/show.html.twig',
@@ -84,7 +73,7 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/blog/category/{id}", name="show_category", defaults={"category" = null})
+     * @Route("/blog/category/{name}", name="show_category", defaults={"category" = null})
      */
     public function showByCategory(Category $category): Response
     {
@@ -99,6 +88,44 @@ class BlogController extends AbstractController
         ] 
         );
     }
+
+    /**
+     * @Route("/blog/tag/{name}", name="show_tag")
+     */
+    public function showTags(Tag $tag)
+    {
+
+        $article = $tag->getArticles();
+        
+
+        return $this->render('blog/tag.html.twig',
+        [
+            'tag' => $tag,
+            'article' => $article,
+        ] 
+        );
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // /**
     //  * @Route("/blog/category/{category}", name="show_category", defaults={"category" = null})
@@ -148,15 +175,11 @@ class BlogController extends AbstractController
     // /**
     //  * @Route("/blog/article/{id}", name="show_article")
     //  */
-    // public function showA(Category $category): Response
+    // public function showA(Article $article): Response
     // {
-    //     // $em = $this->getDoctrine()->getManager();
         
-    //     // $category = $em->getRepository(Category::class)
-    //     //         ->findOneByName($category);
    
-    //     $articles = $category->getArticles();
 
-    //     return $this->render('blog/article.html.twig', ['category'=>$category, 'articles'=> $articles]);
+    //     return $this->render('blog/article.html.twig', ['article'=> $article]);
     // }
 }
