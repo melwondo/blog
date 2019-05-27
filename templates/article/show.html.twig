@@ -21,7 +21,11 @@
             </tr>
             <tr>
                 <th>Tag</th>
-                {# <td>{{ tags }}</td> #}
+                <td>{% for tag in article.tags %}
+                <li class="badge badge-pill badge-info">{{ tag.name }} </li>
+            {% else %}
+                <li>No tags for this article</li>
+            {% endfor %}</td>
             </tr>
         </tbody>
     </table>
