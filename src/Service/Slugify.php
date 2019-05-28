@@ -14,6 +14,7 @@ class Slugify
     $slug = str_replace(' ', '-', $slug);
     $slug = str_replace(',', '-', $slug);
     $slug = trim($slug);
+    $slug = strtolower($slug);
     return $slug;
         
     }
