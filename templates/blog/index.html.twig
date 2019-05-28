@@ -9,6 +9,7 @@
     {% for article in articles %}
         <div>
             <h2>{{ loop.index }} / {{ article.title }}  - Category : {{ article.category.name }}</h2>
+            {# <a href="{{ path('blog_show', { 'page': article.title }) }}"> #}
             <p>{{ article.content }}</p>
         {% for tag in article.tags %}
                 <li class="badge badge-pill badge-info">{{ tag.name }} </li>

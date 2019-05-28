@@ -13,6 +13,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+
 class CategoryController extends AbstractController
 {
     /**
@@ -23,6 +24,7 @@ class CategoryController extends AbstractController
         $category = new Category();
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
+       
 
         if ($form->isSubmitted()) {
             
@@ -40,11 +42,4 @@ class CategoryController extends AbstractController
         ]);
     }
 
-    // /**
-    //  * @Route("/category", name="category_add")
-    //  */
-    // public function add()
-    // {
-
-    // }
 }

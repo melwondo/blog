@@ -78,7 +78,6 @@ class BlogController extends AbstractController
     public function showByCategory(Category $category): Response
     {
 
-   
         $articles = $category->getArticles();
         
         return $this->render('blog/category.html.twig',
@@ -97,7 +96,6 @@ class BlogController extends AbstractController
 
         $article = $tag->getArticles();
         
-
         return $this->render('blog/tag.html.twig',
         [
             'tag' => $tag,
