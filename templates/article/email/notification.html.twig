@@ -1,0 +1,8 @@
+{% include "navbar.html.twig" %}  
+
+
+
+<p>Titre de l'article : {{article.title}}</p>
+
+<p>Lien vers l'article: <a href="{{ url('article_show', {'slug': article.slug}) }}">ici</a><p> 
+
