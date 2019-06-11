@@ -3,11 +3,14 @@
 namespace App\Entity;
 
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
+ * @UniqueEntity("title", message= "Ce titre existe déjà")
  */
 class Article
 {
@@ -20,11 +23,19 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\notBlank()
+     * @Assert\Length(max=255, maxMessage = "Votre titre ne peut pas faire plus de  {{ limit }} lettres")
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\notBlank()
+     * @Assert\Regex(
+     *     pattern="/digital/",
+     *     match=false,
+     *     message="en français, il faut dire numérique"
+     * )
      */
     private $content;
 
