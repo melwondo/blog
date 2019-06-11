@@ -26,7 +26,7 @@ class BlogController extends AbstractController
     public function index(ArticleRepository $repo): Response
     {
 
-        $articles = $repo->findAll();
+        $articles = $repo->findAllWithCategories();
         // $articles = $this->getDoctrine()
         //     ->getRepository(Article::class)
         //     ->findAll();
