@@ -1,20 +1,31 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="{{ path('homepage')}}">Blog</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{ path('blog_index')}}">Liste des articles</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('article_index')}}">Modifier article</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('article_new')}}">New article</a>
-                </li>
-            </ul>
-        </div>
+    <a class="navbar-brand" href="{{ path('homepage')}}">Blog</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ path('blog_index')}}">Liste des articles</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('article_index')}}">Modifier article</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('article_new')}}">New article</a>
+            </li>
+            {% if app.user %}
+            Bonjour {{ app.user.email }} !
+            <li class="nav-item ml-2">
+                <a href="{{ path('app_logout') }}"> Se déconnecter</a>
+            </li>
+            
+            {% else %}
+             <li class="nav-item">
+                <a href="{{ path('app_login') }}"> Se connecter</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
 </nav>
