@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
@@ -18,6 +19,7 @@ class CategoryController extends AbstractController
 {
     /**
      * @Route("/category", name="category")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function add(Request $request,  ObjectManager $manager): Response
     {

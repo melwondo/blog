@@ -3,29 +3,37 @@
 {% block title %}All articles{% endblock %}
 
 {% block body %}
-    {# {{ dump(articles)}} #}
-    <div class="container">
+{# {{ dump(articles)}} #}
+<div class="container">
     <h1>All articles from article s table : </h1>
     {% for article in articles %}
-        <div>
-            <h2>{{ loop.index }} / {{ article.title }}  - Category : {{ article.category.name }}</h2>
-            {# <a href="{{ path('blog_show', { 'page': article.title }) }}"> #}
-            <p>{{ article.content }}</p>
+    <div>
+        <h2>{{ loop.index }} / {{ article.title }} - Category : {{ article.category.name }}</h2>
+        {# <a href="{{ path('blog_show', { 'page': article.title }) }}"> #}
+        <p>{{ article.content }}</p>
+
+
+        {% if is_granted('ROLE_AUTHOR') %}
+        <a href="{{ path('article_edit', { 'slug': article.slug} ) }}">Éditer</a>
+        {% endif %}
+
+
+
         {% for tag in article.tags %}
-                <li class="badge badge-pill badge-info">{{ tag.name }} </li>
-            {% else %}
-                <li>No tags for this article</li>
-            {% endfor %}
-        </div>
+        <li class="badge badge-pill badge-info">{{ tag.name }} </li>
+        {% else %}
+        <li>No tags for this article</li>
+        {% endfor %}
+    </div>
     {% else %}
-        Aucun article trouvé.
+    Aucun article trouvé.
     {% endfor %}
-    
-    
+
+
     <a href="{{ path('homepage') }}">
-      Back to homepage.
+        Back to homepage.
     </a>
     <br>
-    
-    </div>
+
+</div>
 {% endblock %}
