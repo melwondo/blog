@@ -2,18 +2,19 @@
 
 namespace App\Controller;
 
+use App\Entity\Tag;
 use App\Entity\Article;
 use App\Entity\Category;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\TagRepository;
+use App\Repository\ArticleRepository;
 use App\Form\CategoryType\CategoryType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\FormBuilderInterface;
-use App\Repository\ArticleRepository;
-use App\Entity\Tag;
-use App\Repository\TagRepository;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class BlogController extends AbstractController
 {
@@ -23,8 +24,13 @@ class BlogController extends AbstractController
      * @Route("/blog", name="blog_index")
      * @return Response A response instance
      */
-    public function index(ArticleRepository $repo): Response
+    public function index(ArticleRepository $repo, SessionInterface $session): Response
     {
+        if (!$session->has('total')) {
+            $session->set('total', 0); // if total doesn’t exist in session, it is initialized.
+                }
+      
+        $total = $session->get('total');
 
         $articles = $repo->findAllWithCategories();
         // $articles = $this->getDoctrine()

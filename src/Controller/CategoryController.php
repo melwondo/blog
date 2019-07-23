@@ -33,6 +33,11 @@ class CategoryController extends AbstractController
             $manager->persist($category);
             $manager->flush();
 
+            $this->addFlash(
+                'notice',
+                'Catégorie ajouté'
+            );
+
             return $this->redirectToRoute('blog_show');
         }
 

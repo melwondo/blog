@@ -52,6 +52,11 @@ class ArticleController extends AbstractController
                 ['article' => $article]
             ),
             'text/html');
+
+            $this->addFlash(
+                'notice',
+                'Article ajouté'
+            );
             
             $mailer->send($message);
 
@@ -88,9 +93,16 @@ class ArticleController extends AbstractController
             $article->setSlug($slugify->generate($article->getTitle()));
             $this->getDoctrine()->getManager()->flush();
 
+            $this->addFlash(
+                'notice',
+                'Article modifié'
+            );
+            
             return $this->redirectToRoute('article_index', [
                 'id' => $article->getId(),
             ]);
+
+            
         }
 
         return $this->render('article/edit.html.twig', [
@@ -109,6 +121,10 @@ class ArticleController extends AbstractController
             $entityManager->remove($article);
             $entityManager->flush();
         }
+        $this->addFlash(
+            'sup',
+            'Article supprimer'
+        );
 
         return $this->redirectToRoute('article_index');
     }
